@@ -311,6 +311,7 @@ class BouncingMenuViewController: UIViewController, UITableViewDataSource, UITab
         tableView.tableHeaderView = UIView(frame: CGRectMake(0, 0, tableView.frame.width, 1))
         tableView.tableFooterView = UIView(frame: CGRectMake(0, 0, tableView.frame.width, 1))
         
+        tableView.scrollEnabled = false
         tableView.dataSource = self
         tableView.delegate = self
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: self.identifier)
