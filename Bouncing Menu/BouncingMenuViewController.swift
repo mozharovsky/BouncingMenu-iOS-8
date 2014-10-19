@@ -79,6 +79,8 @@ class BouncingMenuViewController: UIViewController, UITableViewDataSource, UITab
                 
                 
                 self.viewOffstage = UIControl(frame: self.viewFrame!)
+                self.viewOffstage?.backgroundColor = self.offstageDefaultBackground
+                self.viewOffstage?.alpha = self.offstageDefaultAlpha
                 self.viewOffstage?.addTarget(self, action: Selector("offstageTouched"), forControlEvents: UIControlEvents.TouchDown)
             }
         }
@@ -87,6 +89,8 @@ class BouncingMenuViewController: UIViewController, UITableViewDataSource, UITab
             if let _tabBar = self.controller!.tabBarController?.tabBar {
                 self.tabBarFrame = _tabBar.frame
                 self.tabBarOffstage = UIControl(frame: self.tabBarFrame!)
+                self.tabBarOffstage?.backgroundColor = self.offstageDefaultBackground
+                self.tabBarOffstage?.alpha = self.offstageDefaultAlpha
                 self.tabBarOffstage?.addTarget(self, action: Selector("offstageTouched"), forControlEvents: UIControlEvents.TouchDown)
                 
                 if self.viewOffstage? != nil {
@@ -108,6 +112,8 @@ class BouncingMenuViewController: UIViewController, UITableViewDataSource, UITab
                 self.navigationBarFrame?.size.height += self.statusBarFrame.size.height
                 
                 self.navigationBarOffstage = UIControl(frame: self.navigationBarFrame!)
+                self.navigationBarOffstage?.backgroundColor = self.offstageDefaultBackground
+                self.navigationBarOffstage?.alpha = self.offstageDefaultAlpha
                 
                 if self.viewOffstage? != nil {
                     self.viewOffstage?.frame = CGRectMake(self.viewOffstage!.frame.origin.x, self.viewOffstage!.frame.origin.y + self.navigationBarFrame!.height, self.viewOffstage!.frame.size.width, self.viewOffstage!.frame.size.height)
