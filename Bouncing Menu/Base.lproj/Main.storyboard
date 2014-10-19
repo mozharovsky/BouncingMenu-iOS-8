@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="uXO-kQ-jAs">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+    </dependencies>
+    <scenes>
+        <!--Main-->
+        <scene sceneID="H21-8Z-pht">
+            <objects>
+                <navigationController id="G08-hN-ffJ" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Main" image="cogwheels" id="hui-Pg-tzb"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="pds-9e-9td">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="e9W-IV-YAI" kind="relationship" relationship="rootViewController" id="p0o-Za-7UT"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="PYc-tN-1JJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-86" y="-590"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="l9m-av-onB">
+            <objects>
+                <tabBarController id="uXO-kQ-jAs" sceneMemberID="viewController">
+                    <nil key="simulatedBottomBarMetrics"/>
+                    <tabBar key="tabBar" contentMode="scaleToFill" id="K5s-bd-B15">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="G08-hN-ffJ" kind="relationship" relationship="viewControllers" id="siH-yQ-kct"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9xm-x8-VsO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-834" y="-590"/>
+        </scene>
+        <!--Bouncing Menu-->
+        <scene sceneID="4wC-si-Xcm">
+            <objects>
+                <viewController id="e9W-IV-YAI" customClass="ViewController" customModule="Bouncing_Menu" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="hms-oW-ghK"/>
+                        <viewControllerLayoutGuide type="bottom" id="iER-V1-4g1"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="5Ab-QA-vgf">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Bouncing Menu" id="HXu-ja-CFO">
+                        <barButtonItem key="rightBarButtonItem" image="More-pic" id="nZk-wt-cpL">
+                            <connections>
+                                <action selector="tapped" destination="e9W-IV-YAI" id="oPh-4N-6fd"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="u7I-kz-HIO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="647" y="-590"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="More-pic" width="85" height="85"/>
+        <image name="cogwheels" width="42" height="42"/>
+    </resources>
+</document>
