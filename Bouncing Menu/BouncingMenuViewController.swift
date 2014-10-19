@@ -82,7 +82,7 @@ class BouncingMenuViewController: UIViewController, UITableViewDataSource, UITab
                 self.viewOffstage?.addTarget(self, action: Selector("offstageTouched"), forControlEvents: UIControlEvents.TouchDown)
             }
         }
-
+        
         if self.doesContainOption(OptionKey.kTabBarOffstageKey) {
             if let _tabBar = self.controller!.tabBarController?.tabBar {
                 self.tabBarFrame = _tabBar.frame
@@ -100,7 +100,7 @@ class BouncingMenuViewController: UIViewController, UITableViewDataSource, UITab
                 }
             }
         }
-
+        
         if self.doesContainOption(OptionKey.kNavigationBarOffstageKey) {
             if let _navBar = self.controller!.navigationController?.navigationBar {
                 self.navigationBarFrame = _navBar.frame
@@ -133,21 +133,20 @@ class BouncingMenuViewController: UIViewController, UITableViewDataSource, UITab
         
         self.tableView = self.generatedTableView()
         self.tableView?.frame = CGRectMake(0, -self.tableView!.frame.height, self.tableView!.frame.width, self.tableView!.frame.height)
-        self.viewOffstage?.addSubview(self.tableView!)
     }
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
-
+    
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
@@ -159,6 +158,7 @@ class BouncingMenuViewController: UIViewController, UITableViewDataSource, UITab
         
         if self.viewOffstage? != nil {
             self.controller?.view.addSubview(self.viewOffstage!)
+            self.controller?.view.addSubview(self.tableView!)
         }
         
         if self.tabBarOffstage? != nil {
@@ -170,9 +170,16 @@ class BouncingMenuViewController: UIViewController, UITableViewDataSource, UITab
         }
         
         if self.isOffstagePresenting == false {
+            var tableViewRect = CGRectMake(0, 0, self.tableView!.frame.width, self.tableView!.frame.height)
+            
+            tableViewRect.origin = CGPointMake(0, self.statusBarFrame.height)
+            if let navBarRect = self.controller?.navigationController?.navigationBar.frame {
+                tableViewRect.origin = CGPointMake(0, tableViewRect.origin.y + navBarRect.height)
+            }
+            
             UIView.beginAnimations(nil, context: nil)
             UIView.setAnimationDuration(duratation)
-            self.tableView?.frame = CGRectMake(0, 0, self.tableView!.frame.width, self.tableView!.frame.height)
+            self.tableView?.frame = tableViewRect
             self.setAlphas()
             self.setBackgrounds(self.isOffstagePresenting)
             UIView.commitAnimations()
@@ -297,13 +304,13 @@ class BouncingMenuViewController: UIViewController, UITableViewDataSource, UITab
         self.navigationBarOffstage?.removeFromSuperview()
     }
     
-    // MARK:- Offstage control events 
+    // MARK:- Offstage control events
     
     func offstageTouched() {
         self.delegate?.offstageTouched()
     }
     
-    // MARK:- Bouncing menu setup 
+    // MARK:- Bouncing menu setup
     
     func generatedTableView() -> UITableView {
         let tableView = UITableView(frame: CGRectMake(0, 0, self.controller!.view.frame.width, self.delegate!.tableViewHeight()), style: UITableViewStyle.Grouped)
