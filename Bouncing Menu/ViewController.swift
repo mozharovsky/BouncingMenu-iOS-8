@@ -18,9 +18,9 @@ class ViewController: UIViewController, BouncingMenuDelegate {
         
         self.view.backgroundColor = UIColor.groupTableViewBackgroundColor()
         
-        self.bouncingMenuController = BouncingMenuViewController(delegate: self, enabledOffstage: EnabledOffstage.kViewAndTabBarOffstage)
+        self.bouncingMenuController = BouncingMenuViewController(delegate: self, enabledOffstage: EnabledOffstage.kDefaultOffstage.toRaw())
     }
-
+    
     @IBAction func tapped() {
         if self.bouncingMenuController?.isOffstagePresenting == false {
             self.bouncingMenuController?.invokeBouncingMenu(0.5)
