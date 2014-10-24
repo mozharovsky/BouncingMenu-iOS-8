@@ -8,12 +8,37 @@
 
 import UIKit
 
-enum EnabledOffstage: UInt32 {
-    case kNone = 0
-    case kViewOffstage = 1
-    case kTabBarOffstage = 2
-    case kNavigationBarOffstage = 4
-    case kDefaultOffstage = 3
+struct EnabledOffstage : RawOptionSetType {
+    private var value: UInt = 0
+    
+    init(_ value: UInt) {
+        self.value = value
+    }
+    
+    static func fromMask(raw: UInt) -> EnabledOffstage {
+        return self(raw)
+    }
+    
+    static func fromRaw(raw: UInt) -> EnabledOffstage? {
+        return self(raw)
+    }
+    
+    func toRaw() -> UInt {
+        return value
+    }
+    
+    static var allZeros: EnabledOffstage {
+        return self(0)
+    }
+    
+    static func convertFromNilLiteral() -> EnabledOffstage {
+        return self(0)
+    }
+    
+    static var ViewOffstage: EnabledOffstage { return self(0b0001) }
+    static var TabBarOffstage: EnabledOffstage { return self(0b0010) }
+    static var NavigationBarOffstage: EnabledOffstage { return self(0b0100) }
+    static var DefaultOffstage: EnabledOffstage { return self(0b0011) }
 }
 
 protocol BouncingMenuDelegate {
@@ -30,7 +55,7 @@ protocol BouncingMenuDelegate {
     func rowSelected(tableView: UITableView, indexPath: NSIndexPath)
 }
 
-class BouncingMenuViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class BouncingMenuViewController: UIViewController, UITableViewDataSource,UITableViewDelegate {
     // Public identifier.
     internal let identifier = "BouncingMenuCell"
     
@@ -53,13 +78,13 @@ class BouncingMenuViewController: UIViewController, UITableViewDataSource, UITab
     private let offstageDefaultBackground: UIColor?
     
     var isOffstagePresenting: Bool = false
-    private var enabledOffstage: EnabledOffstage.Raw = 0
+    private var enabledOffstage = EnabledOffstage.convertFromNilLiteral()
     
     private var isViewChecked: Bool = false
     private var isTabBarChecked: Bool = false
     private var isNavigationBarChecked: Bool = false
     
-    init<T: UIViewController where T: BouncingMenuDelegate>(delegate: T?, enabledOffstage: EnabledOffstage.Raw) {
+    init<T: UIViewController where T: BouncingMenuDelegate>(delegate: T?, enabledOffstage: EnabledOffstage) {
         super.init()
         
         self.delegate = delegate
@@ -67,7 +92,7 @@ class BouncingMenuViewController: UIViewController, UITableViewDataSource, UITab
         self.enabledOffstage = enabledOffstage
         self.offstageDefaultBackground = self.controller?.view.backgroundColor
         
-        if self.doesContainOption(EnabledOffstage.kViewOffstage.toRaw()) {
+        if self.doesContainOption(EnabledOffstage.ViewOffstage) {
             if let _controller = self.controller {
                 self.viewFrame = self.controller!.view.frame
                 
@@ -78,7 +103,7 @@ class BouncingMenuViewController: UIViewController, UITableViewDataSource, UITab
             }
         }
         
-        if self.doesContainOption(EnabledOffstage.kTabBarOffstage.toRaw()) {
+        if self.doesContainOption(EnabledOffstage.TabBarOffstage) {
             if let _tabBar = self.controller!.tabBarController?.tabBar {
                 self.tabBarFrame = _tabBar.frame
                 self.tabBarOffstage = UIControl(frame: self.tabBarFrame!)
@@ -98,7 +123,7 @@ class BouncingMenuViewController: UIViewController, UITableViewDataSource, UITab
             }
         }
         
-        if self.doesContainOption(EnabledOffstage.kNavigationBarOffstage.toRaw()) {
+        if self.doesContainOption(EnabledOffstage.NavigationBarOffstage) {
             if let _navBar = self.controller!.navigationController?.navigationBar {
                 self.navigationBarFrame = _navBar.frame
                 self.navigationBarFrame?.origin.y -= self.statusBarFrame.size.height
@@ -241,18 +266,18 @@ class BouncingMenuViewController: UIViewController, UITableViewDataSource, UITab
         minuendView.frame = CGRectMake(minuendRect.origin.x, minuendRect.origin.y, minuendRect.width, minuendRect.height - deductionRect.height)
     }
     
-    private func doesContainOption(key: EnabledOffstage.Raw) -> Bool {
-        if key & self.enabledOffstage != 0 && self.isViewChecked == false {
+    private func doesContainOption(option: EnabledOffstage) -> Bool {
+        if option.toRaw() & self.enabledOffstage.toRaw() != 0 && self.isViewChecked == false {
             self.isViewChecked = true
             return true
         }
         
-        if key & self.enabledOffstage != 0 && self.isTabBarChecked == false {
+        if option.toRaw() & self.enabledOffstage.toRaw() != 0 && self.isTabBarChecked == false {
             self.isTabBarChecked = true
             return true
         }
         
-        if key & self.enabledOffstage != 0 && self.isNavigationBarChecked == false {
+        if option.toRaw() & self.enabledOffstage.toRaw() != 0 && self.isNavigationBarChecked == false {
             self.isNavigationBarChecked = true
             return true
         }
